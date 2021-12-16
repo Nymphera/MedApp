@@ -9,6 +9,7 @@ import med.medapp.service.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,8 +19,8 @@ public class AppointmentEndpoint {
     private AppointmentService appointmentService;
 
 
-    @GetMapping
-    public List<Appointment> getByPatientId (long id) {
+    @GetMapping ("/patient{id}")
+    public List<Appointment> getByPatientId (@PathVariable long id) {
         return  appointmentService.getByPatientId(id);
     }
 
@@ -30,13 +31,13 @@ public class AppointmentEndpoint {
 
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)
-    public void registerAppointment (@RequestBody Appointment newAppointment) {
+    public void registerAppointment (@Valid @RequestBody Appointment newAppointment) {
         appointmentService.registerAppointment(newAppointment);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus (HttpStatus.NO_CONTENT)
-    public void deleteAppointment (long id) {
+    public void deleteAppointment (@PathVariable long id) {
         appointmentService.deleteAppointment(id);
     }
 
